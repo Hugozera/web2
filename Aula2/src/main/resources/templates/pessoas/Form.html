@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:xmls="http://www.w3.org/1999/xhtml"
+      xmls:layout="http://wwww.ultraq.net/thymeleaf/layout">
+<head>
+  <title>TODO supply a title</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<h1>FORM</h1>
+<form th:action="${pessoa.id == 0} ? @{/pessoas/save} : @{/pessoas/update}" th:object="${pessoa}" method="post">
+  <input type="hidden" th:field="*{id}">
+  <input type="text" th:field="*{nome}"  placeholder="Nome">
+  <input type="submit" value="Enviar">
+</form>
+<a href="/pessoas/list"> Lista Pessoas</a><br>
+<a href="/produto/form"> Form Produto</a>
+</body>
+</html>
+
+99 984158984

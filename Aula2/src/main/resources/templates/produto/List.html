@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>TODO supply a title</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<table class="table" border="1">
+  <thead>
+  <tr>
+    <th>Indice</th>
+    <th>Id</th>
+    <th>Descrição</th>
+    <th>Preço</th>
+    <th colspan="2">Action</th>
+  </tr>
+  </thead>
+  <tr th:each="p, posicao : ${produto}">
+    <td th:text="${posicao.index+1}">
+    <td th:text="${p.id}"> </td>
+    <td th:text="${p.descricao}"> </td>
+    <td th:text="${p.preco}"> </td>
+    <td> <a th:href="@{/produto/editProduto/{id}(id=${p.id})}">Editar</a> </td>
+    <td> <a onclick="return window.confirm('Tem certeza que deseja excluir este registro?')"  th:href="@{/produto/removeProduto/{id}(id=${p.id})}">Excluir</a> </td>
+  </tr>
+  <a href="/pessoas/form"> Form Pessoas</a> <br>
+  <a href="/produto/form"> Form Produtos</a>
+</table>
+
+</body>
+</html>
