@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Consultas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="http://localhost:8080/">Meu App de Consultas</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</nav>
+<div class="container">
+    <h1 class="my-4">Lista de Consultas</h1>
+
+    <div th:if="${view == 'paciente'}">
+        <h2>Dados do Paciente:</h2>
+        <p>CPF: <span th:text="${consultas[0].getPaciente().getCpf()}"></span></p>
+        <p>Nome: <span th:text="${consultas[0].getPaciente().getNome()}"></span></p>
+    </div>
+    <div th:if="${view == 'medico'}">
+        <h2>Dados do Médico:</h2>
+        <p>CRM: <span th:text="${consultas[0].getMedico().getCrm()}"></span></p>
+        <p>Nome: <span th:text="${consultas[0].getMedico().getNome()}"></span></p>
+
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Descrição</th>
+            <th>Valor</th>
+            <th>Data de Emissão</th>
+            <th th:if="${view != 'medico'}">Médico</th>
+            <th th:if="${view != 'paciente'}">Paciente</th>
+            <th colspan="2">Ação</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="consulta : ${consultas}" class="consulta-row" th:data-detalhe="${consulta.detalhe}">
+            <td th:text="${consulta.id}"></td>
+            <td>
+                <span th:text="${consulta.descricao}"></span>
+            </td>
+            <td th:text="${consulta.valor}"></td>
+            <td th:text="${#temporals.format(consulta.data, 'dd/MMM/yyyy HH:mm')}"></td>
+            <td th:if="${view != 'medico'} "th:text="${consulta.getMedico().getNome()}"></td>
+            <td th:if="${view != 'paciente'}" th:text="${consulta.getPaciente().getNome()}"></td>
+            <td><a th:href="@{/consulta/editar(id=${consulta.id})}" class="btn btn-primary">Editar</a></td>
+            <td><a onclick="return window.confirm('Tem certeza que deseja excluir este registro?')"
+                   th:href="@{/consulta/remover/{id}(id=${consulta.id})}" class="btn btn-danger">Excluir</a></td>
+        </tr>
+        <tr>
+            <td colspan="2">Total:</td>
+            <td th:text="${valorTotal}"></td>
+            <td colspan="5"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="text-center">
+    <a th:href="@{/consulta/cadastrar}" class="btn btn-success">Cadastrar Nova Consulta</a>
+</div>
+<div id="consulta-detalhe" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Detalhes da Consulta</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="detalhe-consulta"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".consulta-row").click(function () {
+            var detalhe = $(this).data("detalhe");
+            $("#detalhe-consulta").html(detalhe);
+            $("#consulta-detalhe").modal("show");
+        });
+    });
+</script>
+</body>
+</html>
