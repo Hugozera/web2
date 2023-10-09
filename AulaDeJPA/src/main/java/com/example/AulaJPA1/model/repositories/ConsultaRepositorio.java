@@ -30,6 +30,11 @@ public class ConsultaRepositorio {
         Query query = em.createQuery("from Consulta");
         return query.getResultList();
     }
+    public List<Consulta> detalhes(Long id){
+        Query query = em.createQuery("from Consulta where id = :id");
+        query.setParameter("id", id);
+        return query.getResultList();
+    }
     public List<Consulta> consultasPorIdPaciente(Long id) {
         Query  query = em.createQuery("SELECT c FROM Consulta c WHERE c.paciente.id = :id", Consulta.class);
         query.setParameter("id",id);

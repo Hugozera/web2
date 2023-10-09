@@ -9,15 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-        <a class="navbar-brand" href="http://localhost:8080/">Meu App de Médicos</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </div>
-</nav>
+<header th:replace="fragments/header.html"></header>
 <div class="container">
     <h1 class="my-4">Lista de Médicos</h1>
 
@@ -45,6 +37,7 @@
     </table>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<footer th:replace="fragments/footer.html"></footer>
+
 </body>
 </html>

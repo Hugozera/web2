@@ -44,7 +44,14 @@ public class ConsultaControl {
         modelAndView.addObject("consultas", consultas);
         double valorTotal = consultas.stream().mapToDouble(consulta -> consulta.getValor()).sum();
         modelAndView.addObject("valorTotal", valorTotal);
+        return modelAndView;
+    }
 
+    @GetMapping("/detalhes")
+    public ModelAndView listarDetalhes(@RequestParam("id") Long id) {
+        ModelAndView modelAndView = new ModelAndView("consulta/detalhes");
+        List<Consulta> consultas= consultaRepositorio.detalhes(id);
+        modelAndView.addObject("consultas", consultas);
         return modelAndView;
     }
     @GetMapping("/listaCpf")
@@ -83,14 +90,12 @@ public class ConsultaControl {
         return new ModelAndView("redirect:/consulta/listar");
     }
 
-
     @GetMapping("/editar")
     public ModelAndView editar(@RequestParam("id") Long id) {
         Consulta consulta = consultaRepositorio.consultaFind(id);
-        consultaRepositorio.update(consulta);
         ModelAndView modelAndView = new ModelAndView("consulta/cadastro");
-        return modelAndView.addObject("consulta", consulta);
-
+        modelAndView.addObject("consulta", consulta);
+        return modelAndView;
     }
     @PostMapping("/update")
     public ModelAndView editar(@ModelAttribute("consulta") Consulta consulta) {

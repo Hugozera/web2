@@ -3,61 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Cadastro de Consulta</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-        <a class="navbar-brand" href="http://localhost:8080/">Meu App de Consultas</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </div>
-</nav>
+<header th:replace="fragments/header.html"></header>
 <div class="container">
     <h1 class="my-4">Cadastro de Consulta</h1>
 
-    <form action="/consulta/salvar" method="post">
+    <form th:action="${consulta.id == null ? '/consulta/salvar' : '/consulta/update'}" th:object="${consulta}" method="post">
         <div class="mb-3">
             <label for="descricao" class="form-label">Descrição da Consulta:</label>
-            <input type="text" class="form-control" id="descricao" name="descricao" required>
+            <input type="text" th:field="*{descricao}" class="form-control" required/>
         </div>
 
         <div class="mb-3">
             <label for="valor" class="form-label">Valor:</label>
-            <input type="number" class="form-control" id="valor" name="valor" required>
+            <input type="number" th:field="*{valor}" class="form-control" required/>
         </div>
-
 
         <div class="mb-3">
             <label for="medico" class="form-label">Médico:</label>
-            <select class="form-select" id="medico" name="medico.id" required>
+            <input type="hidden" th:field="*{medico.id}" required class="form-control">
+            <input type="text" th:if="${consulta.id != null}" th:value="${consulta.medico.nome}" class="form-control" readonly>
+            <select th:if="${consulta.id == null}" class="form-select" required>
                 <option value="">Selecione um Médico</option>
-                <!-- Populando as opções com os médicos do banco de dados -->
                 <option th:each="medico : ${medicos}" th:value="${medico.id}" th:text="${medico.nome}"></option>
             </select>
         </div>
 
         <div class="mb-3">
             <label for="paciente" class="form-label">Paciente:</label>
-            <select class="form-select" id="paciente" name="paciente.id" required>
+            <input type="hidden" th:if="${consulta.id != null}" th:field="*{paciente.id}" required class="form-control">
+            <input type="text" th:if="${consulta.id != null}" th:value="${consulta.paciente.nome}" class="form-control" readonly>
+            <select th:if="${consulta.id == null}" class="form-select" required>
                 <option value="">Selecione um Paciente</option>
-                <!-- Populando as opções com os pacientes do banco de dados -->
                 <option th:each="paciente : ${pacientes}" th:value="${paciente.id}" th:text="${paciente.nome}"></option>
             </select>
         </div>
 
-        <button type="submit" class="btn btn-primary">Cadastrar Consulta</button>
+        <button type="submit" class="btn btn-primary">Cadastrar</button>
+        <div class="text-center">
+            <a th:href="@{/consulta/listar}" class="btn btn-secondary">Voltar para a Lista</a>
+        </div>
     </form>
-    <div class="my-4">
-        <a href="/consulta/listar" class="btn btn-secondary">Ver Lista Geral</a>
-    </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<footer th:replace="fragments/footer.html"></footer>
 </body>
 </html>
